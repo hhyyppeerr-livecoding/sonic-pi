@@ -1,0 +1,70 @@
+
+use_bpm 180
+live_loop :metr do
+  sleep 1
+end
+live_loop :pad, sync: :metr do
+  with_fx :reverb, mix: 0.4, room: 0.2 do
+    use_synth :dsaw
+    amp = 0.5
+    speed = [2,4].choose
+    2.times do
+      play (chord, :f3, :minor7), attack: 1, release: 1, amp: amp, width: [0,1,2].choose
+      sleep speed
+    end
+    
+    2.times do
+      play (chord, :f3, :minor7), attack: 1, release: 1, amp: amp, width: [0,1,2].choose
+      sleep speed
+    end
+    2.times do
+      play (chord, :db3, :major7), attack: 1, release: 1, amp: amp, width: [0,1,2].choose
+      sleep speed
+    end
+    2.times do
+      play (chord, :db3, :major7), attack: 1, release: 1, amp: amp, width: [0,1,2].choose
+      sleep speed
+    end
+  end
+end
+
+with_fx :reverb, mix: 0.6, room: 0.1 do
+  live_loop :arp, sync: :metr do
+    use_synth :chiplead
+    time = 0.5
+    amp = 0.6
+    8.times do
+      play(chord, :f4, :minor7).choose, clickiness: 0.8, amp: amp, release: [0.5, 0.1].choose
+      sleep time
+    end
+    8.times do
+      play(chord, :f4, :minor7).choose, clickiness: 0.8, amp: amp, release: [0.1, 0.1, 1].tick
+      sleep time
+    end
+    8.times do
+      play(chord, :db4, :major7).choose, clickiness: 0.8, amp: amp, release: 0.1
+      sleep time
+    end
+    8.times do
+      play(chord, :db4, :major7).choose, clickiness: 0.8, amp: amp, release: 0.1
+      sleep time
+    end
+  end
+end
+
+live_loop :drumloop, sync: :metr do
+  sample :loop_amen, beat_stretch: 4, start: 0, finish: 0.125
+  sleep 0.5
+  sample :loop_amen, beat_stretch: 4, start: 0, finish: 0.125
+  sleep 0.5
+  sample :loop_amen, beat_stretch: 4, start: 0.5, finish: 0.75
+  sleep 1.0
+  sample :loop_amen, beat_stretch: 4, start: 0.25, finish: 0.5
+  sleep 1
+  sample :loop_amen, beat_stretch: 4, start: 0.75, finish: 0.875
+  sleep 0.5
+  sample :loop_amen, beat_stretch: 4, start: 0.25, finish: 0.375
+  sleep 0.5
+end
+
+

@@ -1,0 +1,89 @@
+use_bpm 75
+
+live_loop :main do
+  sleep 1
+end
+
+define :arp do
+  with_fx :reverb, mix: 0.6, room: 0.8 do
+    use_synth :piano
+    notes1 = (ring, :ab3, :f4, :ab4, :c5)
+    notes2 = (ring, :c4, :ab4, :c5, :eb5)
+    notes3 = (ring, :db4, :ab4, :db5, :eb5)
+    notes4 = (ring, :bb3, :ab4, :db5, :c5)
+    use_octave -1
+    4.times do
+      play notes1.tick, amp: rrand(0.6, 1)
+      sleep 0.5
+    end
+    4.times do
+      play notes2.tick, amp: rrand(0.6, 1)
+      sleep 0.5
+    end
+    4.times do
+      play notes3.tick, amp: rrand(0.6, 1)
+      sleep 0.5
+    end
+    4.times do
+      play notes4.tick, amp: rrand(0.6, 1)
+      sleep 0.5
+    end
+  end
+end
+
+define :melody1 do
+  with_fx :reverb, mix: 0.6, room: 0.6 do
+    use_synth :piano
+    notes1 = (ring, :c6, :f5, :ab5, :ab5, :f5, :f5, :eb6, :db6, :c6, :ab5)
+    3.times do
+      play notes1.tick, amp: rrand(0.6, 1)
+      sleep 1
+    end
+    sleep 0.5
+    2.times do
+      play notes1.tick, amp: rrand(0.6, 1)
+      sleep 0.25
+    end
+    sleep 1.5
+    5.times do
+      play notes1.tick, amp: rrand(0.6, 1)
+      sleep 0.5
+    end
+  end
+end
+
+define :melody2 do
+  with_fx :reverb, mix: 0.6, room: 0.6 do
+    use_synth :piano
+    notes1 = (ring, :c6, :f5, :ab5, :ab5, :f5)
+    3.times do
+      play notes1.tick, amp: rrand(0.6, 1)
+      sleep 1
+    end
+    sleep 0.5
+    2.times do
+      play notes1.tick, amp: rrand(0.6, 1)
+      sleep 0.25
+    end
+    sleep 1.5
+    5.times do
+      #play notes1.tick, amp: rrand(0.6, 1)
+      sleep 0.5
+    end
+  end
+end
+
+live_loop :melodies, sync: :main do
+  2.times do
+    melody1
+  end
+  2.times do
+    melody2
+  end
+end
+
+live_loop :arps, sync: :main do
+  2.times do
+    arp
+  end
+end

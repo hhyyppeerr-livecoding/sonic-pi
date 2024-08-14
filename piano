@@ -1,0 +1,156 @@
+
+use_bpm 27
+melodyFilter = 80
+melody2Filter = 80
+bassFilter = 60
+use_random_seed 100
+
+live_loop :main do
+  sleep 1
+end
+
+live_loop :melody, sync: :main do
+  with_fx :level, amp: 1 do
+    use_synth :piano
+    with_fx :lpf, cutoff: melodyFilter do
+      with_fx :reverb, room: 1, mix: 0.5 do
+        use_octave [1, 2, 0].choose
+        
+        play [:ab3, :f4, :ab4, :c5].tick, amp: rrand(0.1, 0.8)
+        play [:ab3, :f4, :ab4, :c5].tick-24, amp: rrand(0.1, 0.8)
+        
+        sleep [2, 1, 0.25, 0.5, 0.125].choose
+        melodyFilter = rrand(80,100)
+      end
+    end
+  end
+end
+
+live_loop :piano_repeat1, sync: :main do
+  with_fx :level, amp: 1.5 do
+    use_synth :piano
+    with_fx :lpf, cutoff: melodyFilter do
+      with_fx :reverb, room: 1, mix: 0.5 do
+        use_octave [1, 2, 0].choose
+        s = [2,0.25, 0.5, 0.125].choose
+        sleep 16
+        4.times do
+          play [:ab3, :f4, :ab4, :c5].choose, amp: rrand(0.1, 0.8)
+          play [:ab3, :f4, :ab4, :c5].tick+12, amp: rrand(0.1, 0.8)
+          sleep s
+        end
+        melodyFilter = rrand(80,100)
+      end
+    end
+  end
+end
+
+live_loop :piano_repeat2, sync: :main do
+  with_fx :level, amp: 1.5 do
+    use_synth :piano
+    with_fx :lpf, cutoff: melodyFilter do
+      with_fx :reverb, room: 1, mix: 0.5 do
+        use_octave [1, 2, 0].choose
+        sleep 4
+        s = (ring, 0.5, 0.25, 0.25)
+        note = [:db4, :ab4, :db3, :eb3].choose
+        [4,2,3].choose.times do
+          play note, amp: rrand(0.1, 0.5)
+          sleep 0.125
+          play note+24, amp: rrand(0.1, 0.5)
+          sleep s.tick
+        end
+      end
+    end
+  end
+end
+
+live_loop :melody2, sync: :main do
+  with_fx :level, amp: 1 do
+    with_fx :lpf, cutoff: melodyFilter do
+      with_fx :reverb, room: 1, mix: 0.5 do
+        use_synth :piano
+        
+        use_octave [1, 0].choose
+        play [:c6, :ab4, :c5, :eb5].choose, amp: rrand(0.6, 0.8)
+        use_synth :beep
+        sleep [0.25, 0.125].choose
+        play [:c5, :ab3, :c4, :eb4].tick, amp: rrand(0.1, 0.4), release: 0.6
+        sleep [1, 2, 0.125].choose
+        melodyFilter = rrand(80,100)
+      end
+    end
+  end
+end
+
+
+live_loop :melody3, sync: :main do
+  with_fx :level, amp: 1 do
+    with_fx :lpf, cutoff: melodyFilter do
+      with_fx :reverb, room: 1, mix: 0.5 do
+        use_synth :piano
+        sleep 0.25
+        use_octave [-1, 0].choose
+        play [:db4, :ab4, :db5, :eb5].choose, amp: rrand(0.6, 0.8)
+        use_synth :beep
+        sleep [2, 0.125].choose
+        play [:db4, :ab4, :db5, :eb5].tick, amp: rrand(0.1, 0.4), release: 0.6
+        melodyFilter = rrand(80,100)
+      end
+    end
+  end
+end
+
+live_loop :arpy, sync: :main do
+  with_fx :level, amp: 1 do
+    with_fx :echo, mix: 0.8, decay: 2, phase: 0.25 do
+      with_fx :reverb, mix: 0.8, room: 0.8 do
+        sleep 4
+        use_synth :tech_saws
+        notes = [:c6, :f5, :ab5, :ab5, :f5, :f5, :eb6, :db6, :c6, :ab5]
+        [4,8].choose.times do
+          use_octave -1
+          at = [1, 0.5].choose
+          play notes.choose-36, amp: rrand(0.05, 0.2), release: 1.5, attack: at
+          play notes.choose-12, amp: rrand(0.05, 0.2), release: 1.5, attack: at
+          play notes.choose-24, amp: rrand(0.05, 0.2), release: 1.5, attack: at
+          sleep [3, 2].choose
+        end
+      end
+    end
+  end
+end
+
+
+live_loop :pad, sync: :main do
+  with_fx :level, amp: 0 do
+    use_synth :fm
+    with_fx :lpf, cutoff: melodyFilter do
+      with_fx :reverb, room: 1, mix: 0.8 do
+        use_octave [1, 0].choose
+        #play [:c3, :ab3, :eb3].tick, amp: rrand(0.1, 0.2), attack: 1, release: 1
+        sleep [1, 0.5,3].choose
+        #play [:c4, :ab4, :eb4].tick, amp: rrand(0.06, 0.1), attack: 1, release: 1
+        sleep [1, 2, 4].choose
+        melodyFilter = rrand(80,120)
+      end
+    end
+  end
+end
+
+live_loop :beeps, sync: :main do
+  with_fx :reverb, room: 1, mix: 0.45 do
+    use_synth :pulse
+    sleep [4,2,3].choose
+    s = 0.125
+    cut = 100
+    detune = 0.01
+    count = 0
+    [8,10,12,4].choose.times do
+      use_octave [-1,0].choose
+      #play [:f5, :db6, :c6, :ab5].choose+detune, amp: 0.06, sustain: rrand(0.05, 0.1), release: 0, cutoff: cut, pulse_width: rrand(0,0.5)
+      detune = detune + 0.007
+      sleep [0.125, 0.25].choose
+    end
+  end
+end

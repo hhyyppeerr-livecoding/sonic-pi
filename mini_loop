@@ -1,0 +1,39 @@
+
+use_bpm 128
+use_synth :piano
+live_loop :main do
+  sleep 1
+end
+amp = 0.2
+live_loop :piano, sync: :main do
+  
+  play 60, release: 0.3, amp: amp
+  play 60+3, release: 0.3, amp: amp
+  play 60+7, release: 0.3, amp: amp
+  play 60+10, release: 0.3, amp: amp
+  sleep 0.5
+  
+  play 60, release: 0.3, amp: amp
+  sleep 0.25
+  play 60+3, release: 0.3, amp: amp
+  sleep 0.25
+  play 60+7, release: 0.3, amp: amp
+  sleep 0.25
+  
+  play 58, release: 0.3, amp: amp
+  play 62, release: 0.3, amp: amp
+  play 60+7, release: 0.3, amp: amp
+  play 60+10, release: 0.3, amp: amp
+  sleep 0.5
+  
+  play 58, release: 0.3, amp: amp
+  play 62, release: 0.3, amp: amp
+  play 60+7, release: 0.3, amp: amp
+  play 60+8, release: 0.3, amp: amp
+  sleep 0.25
+end
+
+live_loop :kck, sync: :main do
+  sample :bd_klub
+  sleep 1
+end

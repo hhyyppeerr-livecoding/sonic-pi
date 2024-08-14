@@ -1,0 +1,27 @@
+live_loop :kick do
+  with_fx :echo, decay: 1, amp: 1 do
+    with_fx :bitcrusher, bits: 0.4, sample_rate: 16000 do
+      sample :ambi_glass_hum, cutoff: 70
+      sleep [2, 4].choose
+      rrand_i(1,3).times do
+        sample :elec_blip, rate: rrand(1,12)
+        sleep [0.125, 0.25].choose
+      end
+    end
+  end
+end
+
+
+live_loop :noise do
+  with_fx :echo, decay: 1, amp: 1 do
+    with_fx :bitcrusher, bits: 0.4, sample_rate: 10000 do
+      sample :perc_door, rate: rrand(3,4)
+      sleep 4
+    end
+  end
+end
+
+live_loop :kick1 do
+  sample :bd_klub, amp: 2
+  sleep 0.5
+end
